@@ -1,0 +1,32 @@
+<% include ./partials/header.ejs %>
+    <!-- main body starts -->
+    <div class="main__body">
+        <!-- sidebar starts -->
+        <% include ./slide.ejs %>
+
+            <!-- sidebar ends -->
+
+            <!-- feed starts -->
+            <div class="feed">
+                <% include ./story.ejs %>
+
+
+                    <!-- message sender starts -->
+                    <% include ./createpost.ejs %>
+
+                        <!-- message sender ends -->
+
+                        <!-- post starts -->
+                        <% include ./post.ejs %>
+
+                            <!-- post ends -->
+            </div>
+            <!-- feed ends -->
+
+            <div style="flex: 0.33" class="widgets">
+
+            </div>
+    </div>
+    <!-- main body ends -->
+
+    <% include ./partials/footer.ejs %>

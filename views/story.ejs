@@ -1,0 +1,16 @@
+<div class="container d-flex">
+    <div class="storyReel">
+        <% posts.forEach(post=>{ %>
+            <!-- story starts -->
+            <div style="
+    background-image: url('<%= post.image %>');
+    " class="story d-flex">
+                <img class="story__avatar" src="<%= post.owner.image %>" alt="" />
+                <h6>
+                    <%= post.owner.name %>
+                </h6>
+            </div>
+            <!-- story ends -->
+            <% }) %>
+    </div>
+</div>

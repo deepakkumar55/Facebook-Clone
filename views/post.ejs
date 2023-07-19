@@ -1,0 +1,42 @@
+<div class="container">
+    <% posts.forEach(post=>{ %>
+    <div class="post">
+        <div class="post__top">
+            <img  class="user__avatar post__avatar"
+                src="<%= post.owner.image %>"
+                alt="" />
+            <div class="post__topInfo">
+                <h3><%=post.owner.name %></h3>
+                <p>18 july at 22:00</p>
+            </div>
+        </div>
+    
+        <div class="post__bottom">
+            <p><%= post.caption %></p>
+        </div>
+    
+        <div class="post__image">
+            <img src="<%= post.image %>"
+                alt="" />
+        </div>
+    
+        <div class="post__options">
+            <div class="post__option btn btn-success g-3">
+                <span class="material-icons"> thumb_up </span>
+                <a class="nav-link" href="/postlike/<%= post._id %>">Like <%= post.likes.length %></a>
+            </div>
+    
+            <div class="post__option">
+                <span class="material-icons"> chat_bubble_outline </span>
+                <p>Comment</p>
+            </div>
+    
+            <div class="post__option">
+                <span class="material-icons"> near_me </span>
+                <p>Share</p>
+            </div>
+        </div>
+    </div>
+    <% }) %>
+    
+</div>
