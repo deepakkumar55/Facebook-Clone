@@ -5,14 +5,8 @@ var postModel = require("./post");
 var localStorage = require("passport-local");
 const passport = require("passport");
 passport.use(new localStorage(usersModel.authenticate()));
-const currentDate = new Date();
 
-// Format the date and time as per your preference
-const formattedDate = currentDate.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+
 router.get("/", function (req, res, next) {
   res.render("index");
 });
@@ -56,13 +50,6 @@ function isLoggedIn(req, res, next) {
     res.redirect("/");
   }
 }
-router.get("/profile", isLoggedIn, function (req, res, next) {
-  usersModel
-    .findOne({ username: req.session.passport.user })
-    .then((loggedInUser) => {
-      res.render("profile", { user: loggedInUser });
-    });
-});
 
 router.get("/logout", function (req, res, next) {
   if (req.isAuthenticated()) {
@@ -85,59 +72,8 @@ router.get("/feed", isLoggedIn, function (req, res, next) {
       res.render("feed", { posts: alpost });
     });
 });
-router.get("/profile/:id", isLoggedIn, async function (req, res, next) {
-  usersModel.findOne({ _id: req.params.id }).then(function (userdetails) {
-    res.render("feed", { user: userdetails });
-  });
-});
-router.get("/edit/:id", isLoggedIn, async function (req, res, next) {
-  usersModel.findOne({ _id: req.params.id }).then(function (editdetails) {
-    res.render("edit", { user: editdetails });
-  });
-});
-
-router.post("/update/:id", isLoggedIn, async function (req, res, next) {
-  usersModel
-    .findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        username: req.body.username,
-        name: req.body.name,
-        image: req.body.image,
-        email: req.body.email,
-      }
-    )
-    .then(function (updateuser) {
-      res.render("/feed", { user: updateuser });
-    });
-});
-
-router.get("/delete/:id", isLoggedIn, async function (req, res, next) {
-  usersModel
-    .findOne({
-      username: req.session.passport.user,
-    })
-    .then(function (loggedInUser) {
-      usersModel
-        .findOne({
-          _id: req.params.id,
-        })
-        .then(function (finduser) {
-          if (loggedInUser.username == finduser.username) {
-            usersModel
-              .findOneAndDelete({ _id: req.params.id })
-              .then(function (user) {
-                res.redirect("/register");
-              });
-          } else {
-            res.redirect("/feed");
-          }
-        });
-    });
-});
-
 router.get("/createpost", isLoggedIn, function (req, res, next) {
-  res.render("createpost");
+  res.render("feed");
 });
 
 router.post("/createpost", isLoggedIn, function (req, res, next) {
@@ -153,7 +89,7 @@ router.post("/createpost", isLoggedIn, function (req, res, next) {
           caption: req.body.caption,
         })
         .then((newpost) => {
-          res.send(newpost);
+          res.redirect("/feed");
         });
     });
 });
@@ -184,7 +120,71 @@ router.get("/postlike/:postid", isLoggedIn, function (req, res, next) {
     });
 });
 
-// router.get("/feed-b", isLoggedIn, function (res, req, next) {
+
+module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.get("/profile/:id", isLoggedIn, async function (req, res, next) {
+//   usersModel.findOne({ _id: req.params.id }).then(function (userdetails) {
+//     res.render("feed", { user: userdetails });
+//   });
+// });
+// router.get("/edit/:id", isLoggedIn, async function (req, res, next) {
+//   usersModel.findOne({ _id: req.params.id }).then(function (editdetails) {
+//     res.render("edit", { user: editdetails });
+//   });
+// });
+
+// router.post("/update/:id", isLoggedIn, async function (req, res, next) {
+//   usersModel
+//     .findOneAndUpdate(
+//       { _id: req.params.id },
+//       {
+//         username: req.body.username,
+//         name: req.body.name,
+//         image: req.body.image,
+//         email: req.body.email,
+//       }
+//     )
+//     .then(function (updateuser) {
+//       res.render("/feed", { user: updateuser });
+//     });
+// });
+
+// router.get("/delete/:id", isLoggedIn, async function (req, res, next) {
 //   usersModel
 //     .findOne({
 //       username: req.session.passport.user,
@@ -194,10 +194,16 @@ router.get("/postlike/:postid", isLoggedIn, function (req, res, next) {
 //         .findOne({
 //           _id: req.params.id,
 //         })
-//         .then(function (Nameupdate) {
-//           res.render("slide",{user:Nameupdate});
+//         .then(function (finduser) {
+//           if (loggedInUser.username == finduser.username) {
+//             usersModel
+//               .findOneAndDelete({ _id: req.params.id })
+//               .then(function (user) {
+//                 res.redirect("/register");
+//               });
+//           } else {
+//             res.redirect("/feed");
+//           }
 //         });
 //     });
 // });
-
-module.exports = router;
